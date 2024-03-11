@@ -66,7 +66,7 @@ app.get("/api/data", async (req, res) => {
     // ); // Allow requests from this origin
     // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Specify allowed HTTP methods
     // res.header("Access-Control-Allow-Headers", "Content-Type"); // Specify allowed headers
-    const docs = setupData();
+    const docs = await setupData();
     res.json(docs); // Send data as JSON response
   } catch (err) {
     console.error("Error fetching data:", err);
