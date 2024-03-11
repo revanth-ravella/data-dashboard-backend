@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyparser = require("body-parser");
 
-
 const MongoClient = require("mongodb").MongoClient;
-
 
 const app = express();
 
@@ -42,12 +40,15 @@ async function run() {
       try {
         // Assuming `docs` contains the data fetched from MongoDB
 
-    
         // Set CORS headers
         res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Allow requests from this origin
+        res.header(
+          "Access-Control-Allow-Origin",
+          "https://data-dashboard-nine.vercel.app/"
+        ); // Allow requests from this origin
         res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Specify allowed HTTP methods
         res.header("Access-Control-Allow-Headers", "Content-Type"); // Specify allowed headers
-    
+
         res.json(docs); // Send data as JSON response
       } catch (err) {
         console.error("Error fetching data:", err);
