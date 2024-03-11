@@ -42,6 +42,11 @@ async function run() {
     console.log("Data retrieved successfully"); // Updated log message
 
     // Define the API route
+
+    app.get("/", async (req, res) => {
+      return { val: 200 };
+    });
+
     app.get("/api/data", async (req, res) => {
       try {
         // Assuming `docs` contains the data fetched from MongoDB
