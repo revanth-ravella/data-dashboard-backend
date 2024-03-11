@@ -5,7 +5,7 @@ const bodyparser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 
 const corsConfig = {
-  origin: "https://data-dashboard-nine.vercel.app/",
+  origin: true,
 };
 
 const app = express();
