@@ -22,8 +22,9 @@ const dbName = "myproject";
 
 // Create a new MongoClient
 const client = new MongoClient(url);
+// let docs;
 
-async function run() {
+const setupData = async () => {
   try {
     // Connect the client to the server
     await client.connect();
@@ -40,57 +41,41 @@ async function run() {
     const docs = await col.find().toArray();
 
     console.log("Data retrieved successfully"); // Updated log message
-
-    // Define the API route
-
-    app.get("/", async (req, res) => {
-      return { val: 200 };
-    });
-
-    app.get("/api/data", async (req, res) => {
-      try {
-        // Assuming `docs` contains the data fetched from MongoDB
-
-        // Set CORS headers
-        // res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Allow requests from this origin
-        // res.header(
-        //   "Access-Control-Allow-Origin",
-        //   "https://data-dashboard-nine.vercel.app/"
-        // ); // Allow requests from this origin
-        // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Specify allowed HTTP methods
-        // res.header("Access-Control-Allow-Headers", "Content-Type"); // Specify allowed headers
-
-        res.json(docs); // Send data as JSON response
-      } catch (err) {
-        console.error("Error fetching data:", err);
-        res.status(500).json({ error: "Internal server error" });
-      }
-    });
+    return docs;
   } catch (err) {
-    console.log(err.stack);
-  } finally {
-    await client.close();
+    console.log(err);
   }
-}
+};
 
-run().catch(console.dir);
+// Define the API route
 
-require("dotenv").config();
+app.get("/", (req, res) => {
+  console.log("requstttttrt");
+  res.send("HELLO");
+});
 
-if (process.env.PORT === undefined) {
-  console.error("Error: PORT environment variable is not set in .env file.");
-  process.exit(1); // Terminate the process if PORT is not set
-}
+app.get("/api/data", async (req, res) => {
+  try {
+    // Assuming `docs` contains the data fetched from MongoDB
 
-if (process.env.HOSTNAME === undefined) {
-  console.error(
-    "Error: HOSTNAME environment variable is not set in .env file."
-  );
-  process.exit(1); // Terminate the process if HOSTNAME is not set
-}
+    // Set CORS headers
+    // res.header("Access-Control-Allow-Origin", "http://localhost:3000"); // Allow requests from this origin
+    // res.header(
+    //   "Access-Control-Allow-Origin",
+    //   "https://data-dashboard-nine.vercel.app/"
+    // ); // Allow requests from this origin
+    // res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE"); // Specify allowed HTTP methods
+    // res.header("Access-Control-Allow-Headers", "Content-Type"); // Specify allowed headers
+    const docs = setupData();
+    res.json(docs); // Send data as JSON response
+  } catch (err) {
+    console.error("Error fetching data:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
 
-const port = process.env.PORT || 5000;
-const hostname = process.env.HOSTNAME || "localhost";
+const port = 5000;
+const hostname = "0.0.0.0";
 
 app.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
